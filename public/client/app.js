@@ -8,12 +8,14 @@ window.Shortly = Backbone.View.extend({
         <li><a href="#" class="create">Shorten</a></li> \
       </ul> \
       </div> \
+      <input type="text" class="search"></input> \
       <div id="container"></div>'
   ),
 
   events: {
     "click li a.index":  "renderIndexView",
-    "click li a.create": "renderCreateView"
+    "click li a.create": "renderCreateView",
+    "keyup input.search": "filter"
   },
 
   initialize: function(){
@@ -27,10 +29,24 @@ window.Shortly = Backbone.View.extend({
     return this;
   },
 
-  renderIndexView: function(e){
+  filter: function(e){
+    // this.renderIndexView(e.tar)
+
+    var $target = $(e.target);
+
+    this.renderIndexView(null,$target.val());
+
+    // App.Mediator.trigger("filterLists", $(@el).attr("value"))
+  },
+
+  // Good to not make a new collection every time this way?
+  // links: new Shortly.Links(),
+
+  renderIndexView: function(e, searchValue){
     e && e.preventDefault();
     var links = new Shortly.Links();
-    var linksView = new Shortly.LinksView( {collection: links} );
+    links.comparator = 'visits';
+    var linksView = new Shortly.LinksView( {collection: links, criteria: searchValue} );
     this.$el.find('#container').html( linksView.render().el );
     this.updateNav('index');
   },
