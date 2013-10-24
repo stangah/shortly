@@ -105,6 +105,16 @@ form input[type=text] {
   margin-bottom: 5px;
 }
 
+.search {
+  margin:20px 20px 10px;
+  border-radius:5px;
+  outline:none;
+  padding:5px;
+  height:30px;
+  width:200px;
+  font-size:1em;
+}
+
 .error {
   background-color: #fee;
   color: #a33;
@@ -130,4 +140,9 @@ form input[type=text] {
 
 .creator .message {
   clear: both;
+}
+
+.visited {
+  color: #abc;
+  font-size: 12px;
 }

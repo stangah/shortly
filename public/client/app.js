@@ -8,14 +8,20 @@ window.Shortly = Backbone.View.extend({
         <li><a href="#" class="create">Shorten</a></li> \
       </ul> \
       </div> \
-      <input type="text" class="search"></input> \
+      <input type="text" placeholder="Filter links" class="search"></input> \
+      <select class="select"> \
+        <option value="visits">View Count</option> \
+        <option value="title">Title</option> \
+        <option value="updated_at">Date</option> \
+      </select> \
       <div id="container"></div>'
   ),
 
   events: {
     "click li a.index":  "renderIndexView",
     "click li a.create": "renderCreateView",
-    "keyup input.search": "filter"
+    "keyup input.search": "renderIndexView",
+    "change select": "renderIndexView"
   },
 
   initialize: function(){
@@ -29,30 +35,23 @@ window.Shortly = Backbone.View.extend({
     return this;
   },
 
-  filter: function(e){
-    // this.renderIndexView(e.tar)
-
-    var $target = $(e.target);
-
-    this.renderIndexView(null,$target.val());
-
-    // App.Mediator.trigger("filterLists", $(@el).attr("value"))
-  },
-
-  // Good to not make a new collection every time this way?
-  // links: new Shortly.Links(),
-
-  renderIndexView: function(e, searchValue){
+  renderIndexView: function(e){
+    window.history.pushState(null, null, '/index');
+    $("select").fadeIn();
+    $(".search").fadeIn();
     e && e.preventDefault();
     var links = new Shortly.Links();
-    links.comparator = 'visits';
-    var linksView = new Shortly.LinksView( {collection: links, criteria: searchValue} );
+    links.comparator = $('.select').val();
+    var linksView = new Shortly.LinksView( {collection: links, criteria: $('.search').val()} );
     this.$el.find('#container').html( linksView.render().el );
     this.updateNav('index');
   },
 
   renderCreateView: function(e){
+    window.history.pushState(null, null, '/create');
     e && e.preventDefault();
+    $("select").hide();
+    $(".search").hide();
     var linkCreateView = new Shortly.LinkCreateView();
     this.$el.find('#container').html( linkCreateView.render().el );
     this.updateNav('create');

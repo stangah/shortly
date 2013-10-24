@@ -5,16 +5,11 @@ Shortly.LinksView = Backbone.View.extend({
   initialize: function(params){
     this.collection.on('sync', this.addAll, this);
     this.collection.fetch();
-    // this.collection.on('reset', this.addAll, this);
     this.criteria = params.criteria || '';
   },
 
   render: function() {
     this.$el.empty();
-    // this.$el.on('click', function(){
-    //   this.collection.sort();
-    //   console.log('hi');
-    // });
     return this;
   },
 
