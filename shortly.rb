@@ -59,7 +59,7 @@ get '/' do
     erb :index
 end
 
-get '/index' do
+get '/create' do
     erb :index
 end
 

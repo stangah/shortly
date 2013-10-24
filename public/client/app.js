@@ -27,7 +27,11 @@ window.Shortly = Backbone.View.extend({
   initialize: function(){
     console.log( "Shortly is running" );
     $('body').append(this.render().el);
-    this.renderIndexView(); // default view
+
+    this.router = new Shortly.Router({el: this.$el.find("#container")});
+    Backbone.history.start({ pushState: true });
+    this.router.on('navigate', this.updateNav, this);
+
   },
 
   render: function(){
@@ -36,24 +40,25 @@ window.Shortly = Backbone.View.extend({
   },
 
   renderIndexView: function(e){
-    window.history.pushState(null, null, '/index');
-    $("select").fadeIn();
-    $(".search").fadeIn();
+    // $("select").fadeIn();
+    // $(".search").fadeIn();
     e && e.preventDefault();
-    var links = new Shortly.Links();
-    links.comparator = $('.select').val();
-    var linksView = new Shortly.LinksView( {collection: links, criteria: $('.search').val()} );
-    this.$el.find('#container').html( linksView.render().el );
+    // var links = new Shortly.Links();
+    // links.comparator = $('.select').val();
+    // var linksView = new Shortly.LinksView( {collection: links, criteria: $('.search').val()} );
+    // this.$el.find('#container').html( linksView.render().el );
+
+    this.router.navigate('/', {trigger: true});
     this.updateNav('index');
   },
 
   renderCreateView: function(e){
-    window.history.pushState(null, null, '/create');
     e && e.preventDefault();
-    $("select").hide();
-    $(".search").hide();
-    var linkCreateView = new Shortly.LinkCreateView();
-    this.$el.find('#container').html( linkCreateView.render().el );
+    // $("select").hide();
+    // $(".search").hide();
+    // var linkCreateView = new Shortly.LinkCreateView();
+    // this.$el.find('#container').html( linkCreateView.render().el );
+    this.router.navigate('/create', {trigger: true});
     this.updateNav('create');
   },
 
